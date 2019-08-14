@@ -35,7 +35,7 @@ module BunnyMock
       # initialize exchange and queue storage
       @exchanges = {}
       @queues    = {}
-      @acknowledged_state = { pending: {}, acked: {}, nacked: {}, rejected: {} }
+      @acknowledged_state = { :pending => {}, :acked => {}, :nacked => {}, :rejected => {} }
 
       # set status to opening
       @status = :opening
@@ -125,7 +125,7 @@ module BunnyMock
     # @api public
     #
     def fanout(name, opts = {})
-      exchange name, opts.merge(type: :fanout)
+      exchange name, opts.merge(:type => :fanout)
     end
 
     ##
@@ -142,7 +142,7 @@ module BunnyMock
     # @api public
     #
     def direct(name, opts = {})
-      exchange name, opts.merge(type: :direct)
+      exchange name, opts.merge(:type => :direct)
     end
 
     ##
@@ -159,7 +159,7 @@ module BunnyMock
     # @api public
     #
     def topic(name, opts = {})
-      exchange name, opts.merge(type: :topic)
+      exchange name, opts.merge(:type => :topic)
     end
 
     ##
@@ -176,7 +176,7 @@ module BunnyMock
     # @api public
     #
     def headers(name, opts = {})
-      exchange name, opts.merge(type: :headers)
+      exchange name, opts.merge(:type => :headers)
     end
 
     ##
@@ -186,7 +186,7 @@ module BunnyMock
     # @api public
     #
     def default_exchange
-      direct '', no_declare: true
+      direct '', :no_declare => true
     end
 
     ##
@@ -201,7 +201,7 @@ module BunnyMock
     def basic_publish(payload, xchg, routing_key, opts = {})
       xchg = xchg_find_or_create(xchg) unless xchg.respond_to? :name
 
-      xchg.publish payload, opts.merge(routing_key: routing_key)
+      xchg.publish payload, opts.merge(:routing_key => routing_key)
 
       self
     end
@@ -234,7 +234,7 @@ module BunnyMock
     # @api public
     #
     def temporary_queue(opts = {})
-      queue '', opts.merge(exclusive: true)
+      queue '', opts.merge(:exclusive => true)
     end
 
     ##
@@ -365,7 +365,7 @@ module BunnyMock
       source = @connection.find_exchange name
       raise Bunny::NotFound.new("Exchange '#{name}' was not found", self, false) unless source
 
-      source.routes_to? receiver, routing_key: key
+      source.routes_to? receiver, :routing_key => key
     end
 
     # @private
@@ -373,7 +373,7 @@ module BunnyMock
       exchange = @connection.find_exchange xchg
       raise Bunny::NotFound.new("Exchange '#{xchg}' was not found", self, false) unless exchange
 
-      exchange.routes_to? queue, routing_key: key
+      exchange.routes_to? queue, :routing_key => key
     end
 
     # @private

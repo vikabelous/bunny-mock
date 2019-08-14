@@ -22,10 +22,10 @@ module BunnyMock
       @channel = channel
       @queue = queue
       @hash = {
-        delivery_tag: self.class.next_delivery_tag,
-        redelivered:  false,
-        exchange:     opts.fetch(:exchange, ''),
-        routing_key:  opts.fetch(:routing_key, queue.name)
+        :delivery_tag => self.class.next_delivery_tag,
+        :redelivered =>  false,
+        :exchange =>     opts.fetch(:exchange, ''),
+        :routing_key =>  opts.fetch(:routing_key, queue.name)
       }
     end
 

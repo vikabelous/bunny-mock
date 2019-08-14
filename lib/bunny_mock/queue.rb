@@ -70,7 +70,7 @@ module BunnyMock
       check_queue_deleted!
 
       # add to messages
-      @messages << { message: payload, options: opts }
+      @messages << { :message => payload, :options => opts }
       yield_consumers
       self
     end
@@ -195,7 +195,7 @@ module BunnyMock
     # @return [Hash] Message data
     # @api public
     #
-    def pop(opts = { manual_ack: false }, &block)
+    def pop(opts = { :manual_ack => false }, &block)
       if BunnyMock.use_bunny_queue_pop_api
         bunny_pop(opts, &block)
       else
